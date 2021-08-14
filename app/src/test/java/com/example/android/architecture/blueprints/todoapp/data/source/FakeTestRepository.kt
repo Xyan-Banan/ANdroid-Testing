@@ -14,7 +14,7 @@ class FakeTestRepository : TasksRepository {
     private val observableTasks = MutableLiveData<Result<List<Task>>>()
 
     override suspend fun getTasks(forceUpdate: Boolean): Result<List<Task>> {
-        return Result.Success(tasksServiceData.values.toList())
+        return Success(tasksServiceData.values.toList())
     }
 
     override suspend fun refreshTasks() {

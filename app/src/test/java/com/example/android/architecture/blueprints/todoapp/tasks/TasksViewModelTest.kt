@@ -20,7 +20,7 @@ import org.junit.runner.RunWith
 class TasksViewModelTest {
 
     // Subject under test
-    lateinit var tasksViewModel: TasksViewModel
+    private lateinit var tasksViewModel: TasksViewModel
 
     @get:Rule
     val instantExecutorRule = InstantTaskExecutorRule()

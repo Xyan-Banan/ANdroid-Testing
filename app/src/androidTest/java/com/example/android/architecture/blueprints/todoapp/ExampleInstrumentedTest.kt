@@ -1,5 +1,7 @@
 package com.example.android.architecture.blueprints.todoapp
 
+import android.app.Application
+import androidx.test.core.app.ApplicationProvider
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.ext.junit.runners.AndroidJUnit4
 
@@ -19,6 +21,7 @@ class ExampleInstrumentedTest {
     fun useAppContext() {
         // Context of the app under test.
         val appContext = InstrumentationRegistry.getInstrumentation().targetContext
+//        val appContext = ApplicationProvider.getApplicationContext<Application>()
         assertEquals("com.example.android.architecture.blueprints.reactive",
             appContext.packageName)
     }

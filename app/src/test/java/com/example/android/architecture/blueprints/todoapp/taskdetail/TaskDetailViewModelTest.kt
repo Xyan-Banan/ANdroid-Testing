@@ -15,10 +15,10 @@ import org.junit.Test
 
 class TaskDetailViewModelTest {
     private lateinit var taskDetailViewModel: TaskDetailViewModel
-    val task1 = Task("Task1", "Descriprtion1")
-    val task2 = Task("Task2", "Descriprtion2", true)
-    val task3 = Task("Task3", "Descriprtion3")
-    val testTask = task1
+    private val task1 = Task("Task1", "Descriprtion1")
+    private val task2 = Task("Task2", "Descriprtion2", true)
+    private val task3 = Task("Task3", "Descriprtion3")
+    private val testTask = task1
 
     @get:Rule
     val instantExecutorRule = InstantTaskExecutorRule()

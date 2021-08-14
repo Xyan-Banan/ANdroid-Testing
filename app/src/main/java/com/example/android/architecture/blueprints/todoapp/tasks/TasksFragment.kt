@@ -31,8 +31,8 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.example.android.architecture.blueprints.todoapp.EventObserver
 import com.example.android.architecture.blueprints.todoapp.R
+import com.example.android.architecture.blueprints.todoapp.TodoApplication
 import com.example.android.architecture.blueprints.todoapp.data.Task
-import com.example.android.architecture.blueprints.todoapp.data.source.DefaultTasksRepository
 import com.example.android.architecture.blueprints.todoapp.databinding.TasksFragBinding
 import com.example.android.architecture.blueprints.todoapp.util.setupRefreshLayout
 import com.example.android.architecture.blueprints.todoapp.util.setupSnackbar
@@ -47,7 +47,7 @@ class TasksFragment : Fragment() {
 
     private val viewModel by viewModels<TasksViewModel> {
         TasksViewModelFactory(
-            DefaultTasksRepository.getRepository(requireActivity().application)
+            (requireContext().applicationContext as TodoApplication).tasksRepository
         )
     }
 //    private lateinit var viewModel: TasksViewModel
@@ -134,21 +134,6 @@ class TasksFragment : Fragment() {
             true
         }
         menu.show()
-//            .run {
-//            menuInflater.inflate(R.menu.filter_tasks, menu)
-//
-//            setOnMenuItemClickListener {
-//                viewModel.setFiltering(
-//                    when (it.itemId) {
-//                        R.id.active -> TasksFilterType.ACTIVE_TASKS
-//                        R.id.completed -> TasksFilterType.COMPLETED_TASKS
-//                        else -> TasksFilterType.ALL_TASKS
-//                    }
-//                )
-//                true
-//            }
-//            show()
-//        }
     }
 
     private fun setupFab() {
