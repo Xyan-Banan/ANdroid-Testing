@@ -26,11 +26,13 @@ import android.view.ViewGroup
 import androidx.appcompat.widget.PopupMenu
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.example.android.architecture.blueprints.todoapp.EventObserver
 import com.example.android.architecture.blueprints.todoapp.R
 import com.example.android.architecture.blueprints.todoapp.data.Task
+import com.example.android.architecture.blueprints.todoapp.data.source.DefaultTasksRepository
 import com.example.android.architecture.blueprints.todoapp.databinding.TasksFragBinding
 import com.example.android.architecture.blueprints.todoapp.util.setupRefreshLayout
 import com.example.android.architecture.blueprints.todoapp.util.setupSnackbar
@@ -43,7 +45,12 @@ import timber.log.Timber
  */
 class TasksFragment : Fragment() {
 
-    private val viewModel by viewModels<TasksViewModel>()
+    private val viewModel by viewModels<TasksViewModel> {
+        TasksViewModelFactory(
+            DefaultTasksRepository.getRepository(requireActivity().application)
+        )
+    }
+//    private lateinit var viewModel: TasksViewModel
 
     private val args: TasksFragmentArgs by navArgs()
 
@@ -54,7 +61,8 @@ class TasksFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
+//        viewModel = ViewModelProvider(this).get(TasksViewModel::class.java)
         viewDataBinding = TasksFragBinding.inflate(inflater, container, false).apply {
             viewmodel = viewModel
         }
@@ -113,21 +121,34 @@ class TasksFragment : Fragment() {
 
     private fun showFilteringPopUpMenu() {
         val view = activity?.findViewById<View>(R.id.menu_filter) ?: return
-        PopupMenu(requireContext(), view).run {
-            menuInflater.inflate(R.menu.filter_tasks, menu)
-
-            setOnMenuItemClickListener {
-                viewModel.setFiltering(
-                    when (it.itemId) {
-                        R.id.active -> TasksFilterType.ACTIVE_TASKS
-                        R.id.completed -> TasksFilterType.COMPLETED_TASKS
-                        else -> TasksFilterType.ALL_TASKS
-                    }
-                )
-                true
-            }
-            show()
+        val menu = PopupMenu(requireContext(), view)
+        menu.inflate(R.menu.filter_tasks)
+        menu.setOnMenuItemClickListener {
+            viewModel.setFiltering(
+                when (it.itemId) {
+                    R.id.active -> TasksFilterType.ACTIVE_TASKS
+                    R.id.completed -> TasksFilterType.COMPLETED_TASKS
+                    else -> TasksFilterType.ALL_TASKS
+                }
+            )
+            true
         }
+        menu.show()
+//            .run {
+//            menuInflater.inflate(R.menu.filter_tasks, menu)
+//
+//            setOnMenuItemClickListener {
+//                viewModel.setFiltering(
+//                    when (it.itemId) {
+//                        R.id.active -> TasksFilterType.ACTIVE_TASKS
+//                        R.id.completed -> TasksFilterType.COMPLETED_TASKS
+//                        else -> TasksFilterType.ALL_TASKS
+//                    }
+//                )
+//                true
+//            }
+//            show()
+//        }
     }
 
     private fun setupFab() {
